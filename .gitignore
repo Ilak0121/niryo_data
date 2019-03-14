@@ -1,3 +1,5 @@
 sensors/current
 
 res/
+
+*.swp
