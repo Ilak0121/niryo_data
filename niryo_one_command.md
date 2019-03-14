@@ -6,7 +6,7 @@
 - sudo systemctl start niryo_one_ros.service
 - start the execution in current terminal, you'll see all the logs so you can copy and paste them.
 ***
-###ssh connect
-- ssh niryo@(ip-address)
-- robotics
+### ssh connect
+`ssh niryo@(ip-address)`
+`robotics`
 
