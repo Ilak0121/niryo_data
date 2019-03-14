@@ -1,4 +1,4 @@
-###To-stop
+### To-stop
 - sudo systemctl stop niryo_one_ros.service
 
 ### To-start
