@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include<iostream>
+#include<errno.h>
+#include<wiringPiI2C.h>
+#include<sys/time.h>
+#include<unistd.h>
+
+
+using namespace std;
+
+int main(){
+    int fd,result;
+    long long milliseconds;
+    struct timeval te;
+
+
+    unsigned char buffer[100];
+
+    fd = wiringPiI2CSetup(0x40); //address
+
+    cout<<"Init result:"<<fd<<endl;
+
+    for(int i=0;i<0x0000ffff;i++){
+
+        //result = wiringPiI2CWriteReg16(fd,0x40,(i&0xfff));
+        
+        gettimeofday(&te,NULL);
+        
+        milliseconds = te.tv_sec*100LL + te.tv_usec/100;
+        
+        printf("%lld\n",milliseconds);
+
+
+        if(result == -1)
+            cout<<"Error. Error is:"<<errno<<endl;
+    }
+
+    return 0;
+}
