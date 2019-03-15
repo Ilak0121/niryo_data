@@ -1,5 +1,5 @@
-current: current.cpp
-	g++ -o current current.cpp -lwiringPi
+current: current.cpp current_setup.cpp
+	g++ -o current current.cpp current_setup.cpp -lwiringPi
 
 clean:
 	rm current
