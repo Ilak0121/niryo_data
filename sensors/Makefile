@@ -1,5 +1,5 @@
-current: ina219.cpp
-	g++ -o current ina219.cpp -lwiringPi
+current: current.cpp
+	g++ -o current current.cpp -lwiringPi
 
 clean:
 	rm current
