@@ -74,7 +74,4 @@ if __name__ == "__main__":
     address = 0x68       # via i2cdetect
     while True:
         mainin()
-        print
-        print
-        print
         time.sleep(5)
