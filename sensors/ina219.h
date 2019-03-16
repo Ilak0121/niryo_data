@@ -16,8 +16,8 @@ class INA219{
         enum t_i2caddr{
             I2C_ADDR_40 = 0x40,
             I2C_ADDR_41 = 0x41,
-            I2C_ADDR_42 = 0x44,
-            I2C_ADDR_43 = 0x45
+            I2C_ADDR_44 = 0x44,
+            I2C_ADDR_45 = 0x45
         };
 
         enum t_gain{
