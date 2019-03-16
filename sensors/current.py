@@ -9,8 +9,8 @@ def read():
 
     try:
         #print("bus current:%.3f mA"%ina.shunt_voltage())
-        print("bus current:%.3f mA"%ina.voltage())
-        #print("bus current:%.3f mA"%ina.current())
+        #print("bus current:%.3f mA"%ina.voltage())
+        print("bus current:%.3f mA"%ina.current())
     except DeviceRangeError as e:
         print(e)
 

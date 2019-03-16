@@ -14,7 +14,8 @@ void configure(int fd);
 void calibrate(int fd,float shunt_val, float v_shunt_max, float v_bux_max, float i_max_expected);
 
 int main(){
-    int fd,result;
+    int fd;
+    int16_t result;
 
     long long milliseconds; //for timestamp
     struct timeval te;
@@ -35,13 +36,15 @@ int main(){
         //result = wiringPiI2CWriteReg8(fd,0x40,(i&0xfff));
         //result = wiringPiI2CReadReg16(fd,0x40,(i&0xfff));
         //result = wiringPiI2CReadReg8(fd,0x40,(i&0xfff));
-        float Result = wiringPiI2CReadReg16(fd, 0x02);//0x04);
-        Result /= 100000;
+        result = wiringPiI2CReadReg16(fd, 0x02);//0x02);
+        result >>= 3 ;
+        float result1 = result* 0.004;
+        //result *= current_lsb;
         
-        if(Result == -1)
+        if(result == -1)
             cout<<"Error. Error is:"<<errno<<endl;
         else
-            cout<<"value:"<<Result<<endl;//*current_lsb<<endl;
+            cout<<"value:"<<result1<<endl;//*current_lsb<<endl;
     }
 
     return 0;
