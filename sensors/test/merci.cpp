@@ -16,7 +16,8 @@ int main(){
 
         wiringPiI2CWriteReg16(ina219.m_fd, INA219_REG_CALIBRATION, ina219.m_calValue);
         double current  = wiringPiI2CReadReg16(ina219.m_fd, INA219_REG_CURRENT) / ina219.m_currentDivider;
-        cout<<shuntVolts<<endl;
+
+        cout<<volts<<endl;
 
         sleep(1);
 
