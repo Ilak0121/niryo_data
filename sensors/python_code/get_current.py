@@ -48,10 +48,9 @@ def sensing(args):
             #print("avg"+str(time_avg/n))
             if DEBUG_MODE == 0:
                 path = './test.txt'
-                fd = open(path,'w')
-                fd.write('%s %s \n' % (args.timestamp, args.name))
-                fd.write(txt)
-                fd.close()
+                with open(path,'w') as fd:
+                    fd.write('%s %s \n' % (args.timestamp, args.name))
+                    fd.write(txt)
             sys.exit(1)
 
 
