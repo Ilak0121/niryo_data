@@ -1,5 +1,5 @@
-sensors/current
-
-res/
+current
+test
+node
 
 *.swp
