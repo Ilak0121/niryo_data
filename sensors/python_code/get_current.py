@@ -27,9 +27,9 @@ def sensing(args):
             string = '%.3f'%time.time()
             if not re.search(r'0$', string) == None:
                 string += ","
-                #time1 = time.time()
+                time1 = time.time()
                 string += '%.4f'%ina.current()
-                #time2 = time.time()
+                time2 = time.time()
                 #if args.save == False:
                 if DEBUG_MODE == 1:
                     print(string)
@@ -37,15 +37,15 @@ def sensing(args):
                     txt += string + '\n'  #overflow considering after experiment
 
                     #'''for debugging'''
-                    #diff = "i/o each load time is:"+str(time2-time1)
-                    #time_avg += (time2-time1)
-                    #n += 1
-                    #print(diff)
+                    diff = "i/o each load time is:"+str(time2-time1)
+                    time_avg += (time2-time1)
+                    n += 1
+                    print(diff)
         except DeviceRangeError as e:
             return
             print(e)
         except (KeyboardInterrupt,EOFError):
-            #print("avg"+str(time_avg/n))
+            print("avg"+str(time_avg/n))
             if DEBUG_MODE == 0:
                 path = './test.txt'
                 with open(path,'w') as fd:
