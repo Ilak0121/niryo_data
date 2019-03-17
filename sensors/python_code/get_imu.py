@@ -1,3 +1,5 @@
+#https://gongnorina.tistory.com/77
+
 import smbus
 import math
 import time
@@ -5,6 +7,10 @@ import time
 # Register
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
+
+bus=0
+address=0
+
  
 def read_byte(reg):
     return bus.read_byte_data(address, reg)
@@ -33,45 +39,40 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
  
-def mainin():
+def main():
  
-    # Aktivieren, um das Modul ansprechen zu koennen
-    bus.write_byte_data(address, power_mgmt_1, 0)
+    bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
  
-    print "Gyroskop"
-    print "--------"
+    gryo_xout = read_word_2c(0x43)
+    gryo_yout = read_word_2c(0x45)
+    gryo_zout = read_word_2c(0x47)
  
-    gyroskop_xout = read_word_2c(0x43)
-    gyroskop_yout = read_word_2c(0x45)
-    gyroskop_zout = read_word_2c(0x47)
+    print("gyro_xout: ", ("%5d" % gryo_xout), " scaled: ", (gryo_xout / 131))
+    print("gyro_yout: ", ("%5d" % gryo_yout), " scaled: ", (gryo_yout / 131))
+    print("gyro_zout: ", ("%5d" % gryo_zout), " scaled: ", (gryo_zout / 131))
  
-    print "gyroskop_xout: ", ("%5d" % gyroskop_xout), " skaliert: ", (gyroskop_xout / 131)
-    print "gyroskop_yout: ", ("%5d" % gyroskop_yout), " skaliert: ", (gyroskop_yout / 131)
-    print "gyroskop_zout: ", ("%5d" % gyroskop_zout), " skaliert: ", (gyroskop_zout / 131)
+    print("---------------------")
+    print("accelerometer data")
+    print("---------------------")
  
-    print
-    print "Beschleunigungssensor"
-    print "---------------------"
+    accel_xout = read_word_2c(0x3b)
+    accel_yout = read_word_2c(0x3d)
+    accel_zout = read_word_2c(0x3f)
  
-    beschleunigung_xout = read_word_2c(0x3b)
-    beschleunigung_yout = read_word_2c(0x3d)
-    beschleunigung_zout = read_word_2c(0x3f)
+    accel_xout_scaled = accel_xout / 16384.0
+    accel_yout_scaled = accel_yout / 16384.0
+    accel_zout_scaled = accel_zout / 16384.0
  
-    beschleunigung_xout_skaliert = beschleunigung_xout / 16384.0
-    beschleunigung_yout_skaliert = beschleunigung_yout / 16384.0
-    beschleunigung_zout_skaliert = beschleunigung_zout / 16384.0
+    print("accel_xout: ", ("%6d" % accel_xout), " scaled: ", accel_xout_scaled)
+    print("accel_yout: ", ("%6d" % accel_yout), " scaled: ", accel_yout_scaled)
+    print("accel_zout: ", ("%6d" % accel_zout), " scaled: ", accel_zout_scaled)
  
-    print "beschleunigung_xout: ", ("%6d" % beschleunigung_xout), " skaliert: ", beschleunigung_xout_skaliert
-    print "beschleunigung_yout: ", ("%6d" % beschleunigung_yout), " skaliert: ", beschleunigung_yout_skaliert
-    print "beschleunigung_zout: ", ("%6d" % beschleunigung_zout), " skaliert: ", beschleunigung_zout_skaliert
- 
-    print "X Rotation: " , get_x_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
-    print "Y Rotation: " , get_y_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
+    print("X Rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled))
+    print("Y Rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled))
 
 if __name__ == "__main__":
 
     bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
     address = 0x68       # via i2cdetect
     while True:
-        mainin()
-        time.sleep(5)
+        main()
