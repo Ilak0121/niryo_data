@@ -1,5 +1,4 @@
 #https://gongnorina.tistory.com/77
-
 import smbus
 import math
 import time
@@ -10,8 +9,6 @@ power_mgmt_2 = 0x6c
 
 bus=0
 address=0
-
-max_time=0
  
 def read_byte(reg):
     return bus.read_byte_data(address, reg)
@@ -42,13 +39,9 @@ def get_x_rotation(x,y,z):
  
 def main():
  
-    global max_time
- 
-    time1= time.time()
     gryo_xout = read_word_2c(0x43)
     gryo_yout = read_word_2c(0x45)
     gryo_zout = read_word_2c(0x47)
- 
  
     accel_xout = read_word_2c(0x3b)
     accel_yout = read_word_2c(0x3d)
@@ -57,28 +50,22 @@ def main():
     accel_xout_scaled = accel_xout / 16384.0
     accel_yout_scaled = accel_yout / 16384.0
     accel_zout_scaled = accel_zout / 16384.0
-    time2= time.time()
- 
 
-    #print("----------------------------------------------------")
-    #print("gyro_xout: ", ("%5d" % gryo_xout), " scaled: ", (gryo_xout / 131))
-    #print("gyro_yout: ", ("%5d" % gryo_yout), " scaled: ", (gryo_yout / 131))
-    #print("gyro_zout: ", ("%5d" % gryo_zout), " scaled: ", (gryo_zout / 131))
+    print("----------------------------------------------------")
+    print("gyro_xout: ", ("%5d" % gryo_xout), " scaled: ", (gryo_xout / 131))
+    print("gyro_yout: ", ("%5d" % gryo_yout), " scaled: ", (gryo_yout / 131))
+    print("gyro_zout: ", ("%5d" % gryo_zout), " scaled: ", (gryo_zout / 131))
  
-    #print("---------------------")
-    #print("accelerometer data")
-    #print("---------------------")
-    #print("accel_xout: ", ("%6d" % accel_xout), " scaled: ", accel_xout_scaled)
-    #print("accel_yout: ", ("%6d" % accel_yout), " scaled: ", accel_yout_scaled)
-    #print("accel_zout: ", ("%6d" % accel_zout), " scaled: ", accel_zout_scaled)
+    print("---------------------")
+    print("accelerometer data")
+    print("---------------------")
+    print("accel_xout: ", ("%6d" % accel_xout), " scaled: ", accel_xout_scaled)
+    print("accel_yout: ", ("%6d" % accel_yout), " scaled: ", accel_yout_scaled)
+    print("accel_zout: ", ("%6d" % accel_zout), " scaled: ", accel_zout_scaled)
  
-    #print("X Rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled))
-    #print("Y Rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled))
-    #print("----------------------------------------------------")
-    #print("each : "+str(time2-time1))
-    if (time2-time1) > max_time:
-        max_time = time2-time1
-    print("max:"+str(max_time))
+    print("X Rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled))
+    print("Y Rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled))
+    print("----------------------------------------------------")
 
 if __name__ == "__main__":
 
