@@ -1,4 +1,5 @@
 import socket
+import time
 
 def run_server(port=4000):
   host = '127.0.0.1'
@@ -7,7 +8,8 @@ def run_server(port=4000):
     s.listen(1)
     conn, addr = s.accept()
     msg = conn.recv(1024)
-    print(msg.decode())
+    time_recv = time.time()
+    print(msg.decode() +'\nreceiving_time >> '+ str(time_recv))
     conn.sendall(msg)
     conn.close()
 
