@@ -1,14 +1,15 @@
+# this code is for sql query from sensor txt file to database 
 import pymysql
+import re
+import sys
+import argparse
 
 
 def sql_insert(name, date_limit, weight, company=None):
     passwd = readpasswd()
-    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
-    curs = conn.cursor()
     sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
     curs.execute(sql,(name,date_limit,weight,company))
     conn.commit()
-    conn.close()
     backup()
 
 
@@ -23,7 +24,6 @@ def sql_insert(name, date_limit, weight, company=None):
     sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
     curs.execute(sql,(name,date_limit,weight,company))
     conn.commit()
-    conn.close()
     print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
     backup()
 
@@ -66,9 +66,7 @@ def sql_list():
     rows = curs.fetchall()
     rows = list(rows)
     print("\n-----------------------------------------------------------")
-    print("-----------list of stocks in refrigerator------------------")
-    print("-----------------------------------------------------------")
-    print("|format: index| Name / Date_limit / Date_enter / Company / Weight|")
+    print("|format: index| Name / Date_limit / Date_enter / Company / Weight|") # printing columns
     print("-----------------------------------------------------------")
     for row in rows:
         line = " | "
@@ -85,12 +83,19 @@ def sql_list():
     print("\n[INFO] End of Lists [press 'Enter' to 'continue']...")
 
 if __name__ == "__main__":
-    passwd = 'enter yout password' 
-    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
-    curs = conn.cursor()
-    
-    #process()
 
+    # parsing with file name
+    parser - argparse.ArgumentParser(description='Processing database save from text file to database(mysql) as query')
+    parser.add_argument('-f','--file',help='-f [FILE_NAME]',required=True)
+    
+    #initiating of DB
+    DB_server = 'localhost'
+    user - 'enter your username'
+    passwd = 'enter your password' 
+
+    conn = pymysql.connect(host=DB_server,user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
+    curs = conn.cursor()
+    #process()
     conn.close()
 
 
