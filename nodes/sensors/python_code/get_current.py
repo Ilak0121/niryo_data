@@ -2,6 +2,7 @@ import os.path
 import re
 import sys
 import time
+import socket
 import argparse
 
 from ina219 import (INA219, DeviceRangeError)
@@ -10,7 +11,7 @@ SHUNT_OHMS = 0.1
 
 DEBUG_MODE = 0 #save file or print monitor
 
-def sensing(args):
+def sensing(name, start, end):
     ina = INA219(SHUNT_OHMS) #need to accurate
     ina.configure()
 
@@ -55,15 +56,18 @@ def sensing(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Process current sensing with ina219 module')
+    host = 'localhost' #for socket
+    port = 4000
+    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
+        while(True):
+            s.bind((host,port))
+            s.listen(1)
+            conn, addr = s.accept()
+            msg = conn.recv(1024)
+            time_recv = time.time()
+            conn.sendall(msg)
 
-    #parser.add_argument('-s', '--save', help='-s [True/False]; save or not', type=bool, default=False)
-    parser.add_argument('-n', '--name', help='-n [TESTCASE_NAME]', required=True) 
-    parser.add_argument('-t1', '--start', type=int, required=True, help= '-ts [TIMESTAMP_START]')
-    parser.add_argument('-t2', '--end', type=int, required=True, help= '-ts [TIMESTAMP_END]')
 
-    args = parser.parse_args()
-    print(args)
-
-    sensing(args) # gonna give parameter of timestamp following 2 second start
+    sensing() 
+    # gonna give parameter of timestamp following 2 second start
 

@@ -93,16 +93,4 @@ def sensing(args):
 
 
 if __name__ == "__main__":
-
-    #parser init
-    parser = argparse.ArgumentParser(description='Process IMU sensing with mpu6500') 
-
-    #add parser
-    parser.add_argument('-n', '--name', help='-n [TESTCASE_NAME]', required=True) 
-    parser.add_argument('-t1', '--start', type=int, required=True, help= '-ts [TIMESTAMP_START]')
-    parser.add_argument('-t2', '--end', type=int, required=True, help= '-ts [TIMESTAMP_END]')
-
-    args = parser.parse_args()
-    print(args)
-
     sensing(args)
