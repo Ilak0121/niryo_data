@@ -55,11 +55,12 @@ def sensing(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Processing Sensing data with timestamp reservation and testcase naem saving')
+    parser = argparse.ArgumentParser(description='Process current sensing with ina219 module')
 
     #parser.add_argument('-s', '--save', help='-s [True/False]; save or not', type=bool, default=False)
     parser.add_argument('-n', '--name', help='-n [TESTCASE_NAME]', required=True) 
-    parser.add_argument('-t', '--timestamp', type=int, required=True, help= '-t [TIMESTAMP]')
+    parser.add_argument('-ts', '--timestamp_start', type=int, required=True, help= '-ts [TIMESTAMP_START]')
+    parser.add_argument('-te', '--timestamp_end', type=int, required=True, help= '-ts [TIMESTAMP_END]')
 
     args = parser.parse_args()
     print(args)

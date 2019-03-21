@@ -1,7 +1,11 @@
 #https://gongnorina.tistory.com/77
+import os.path
+import re
+import sys
+import time
+import argparse
 import smbus
 import math
-import time
  
 # Register
 power_mgmt_1 = 0x6b
@@ -37,7 +41,10 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
  
-def main():
+def sensing(args):
+    bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
+    address = 0x68       # via i2cdetect
+    bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
  
     gryo_xout = read_word_2c(0x43)
     gryo_yout = read_word_2c(0x45)
@@ -68,9 +75,15 @@ def main():
     print("----------------------------------------------------")
 
 if __name__ == "__main__":
+    #parser init
+    parser = argparse.ArgumentParser(description='Process IMU sensing with mpu6500') 
 
-    bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
-    address = 0x68       # via i2cdetect
-    bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
-    while True:
-        main()
+    #add parser
+    parser.add_argument('-n', '--name', help='-n [TESTCASE_NAME]', required=True) 
+    parser.add_argument('-ts', '--timestamp_start', type=int, required=True, help= '-ts [TIMESTAMP_START]')
+    parser.add_argument('-te', '--timestamp_end', type=int, required=True, help= '-ts [TIMESTAMP_END]')
+
+    args = parser.parse_args()
+    print(args)
+
+    sensing(args)
