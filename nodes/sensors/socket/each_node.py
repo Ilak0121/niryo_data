@@ -18,7 +18,9 @@ def run_server(port=4000):
               #time_recv = time.time()
               #print(msg.decode() +'\nreceiving_time >> '+ str(time_recv))
               print(data.get("attr"))
-              print('time gap : '+str(recv_time - float(data.get('attr')[3])))
+              (name,st,et,test) = data.get('attr')
+              print(name,st,et,test)
+              #print('time gap : '+str(recv_time - float(data.get('attr')[3])))
               #conn.sendall(msg)
       except (KeyboardInterrupt, EOFError) as e:
           print('quit----')
