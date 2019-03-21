@@ -15,6 +15,7 @@ try:
     # Calibrate robot first
     n.calibrate_manual()
     print "Calibration finished !"
+    #n.get_hardware_statue()
 
     # Test learning mode
     n.activate_learning_mode(False)

@@ -13,6 +13,8 @@ power_mgmt_2 = 0x6c
 
 bus=0
 address=0
+
+DEBUG_MODE = 0 #not debugging
  
 def read_byte(reg):
     return bus.read_byte_data(address, reg)
@@ -45,36 +47,53 @@ def sensing(args):
     bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
     address = 0x68       # via i2cdetect
     bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
- 
-    gryo_xout = read_word_2c(0x43)
-    gryo_yout = read_word_2c(0x45)
-    gryo_zout = read_word_2c(0x47)
- 
-    accel_xout = read_word_2c(0x3b)
-    accel_yout = read_word_2c(0x3d)
-    accel_zout = read_word_2c(0x3f)
- 
-    accel_xout_scaled = accel_xout / 16384.0
-    accel_yout_scaled = accel_yout / 16384.0
-    accel_zout_scaled = accel_zout / 16384.0
 
-    print("----------------------------------------------------")
-    print("gyro_xout: ", ("%5d" % gryo_xout), " scaled: ", (gryo_xout / 131))
-    print("gyro_yout: ", ("%5d" % gryo_yout), " scaled: ", (gryo_yout / 131))
-    print("gyro_zout: ", ("%5d" % gryo_zout), " scaled: ", (gryo_zout / 131))
+    p = re.compile('0$')
+    txt = ''
  
-    print("---------------------")
-    print("accelerometer data")
-    print("---------------------")
-    print("accel_xout: ", ("%6d" % accel_xout), " scaled: ", accel_xout_scaled)
-    print("accel_yout: ", ("%6d" % accel_yout), " scaled: ", accel_yout_scaled)
-    print("accel_zout: ", ("%6d" % accel_zout), " scaled: ", accel_zout_scaled)
- 
-    print("X Rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled))
-    print("Y Rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled))
-    print("----------------------------------------------------")
+    while(True):
+        try:
+            string = '%.3f'%time.time()
+            if not re.search(r'0$',string) == None:
+                string += ','
+                # time testing needed and have to adjust
+                gyro_xout = read_word_2c(0x43)
+                gyro_yout = read_word_2c(0x45)
+                gyro_zout = read_word_2c(0x47)
+                gyro_xout_scaled = gyro_xout / 131
+                gyro_yout_scaled = gyro_yout / 131
+                gyro_zout_scaled = gyro_zout / 131
+             
+                accel_xout = read_word_2c(0x3b)
+                accel_yout = read_word_2c(0x3d)
+                accel_zout = read_word_2c(0x3f)
+                accel_xout_scaled = accel_xout / 16384.0
+                accel_yout_scaled = accel_yout / 16384.0
+                accel_zout_scaled = accel_zout / 16384.0
+
+                X_Rotation = get_x_rotation(accel_xout_scaled,accel_yout_scaled,accel_zout_scaled)
+                Y_Rotation = get_y_rotation(accel_xout_scaled,accel_yout_scaled,accel_zout_scaled)
+
+                string += ','+str('%.5f'%gyro_xout)+','+str('%.5f'%gyro_yout)+','+str('%.5f'%gyro_zout)+','+str('%.5f'%accel_xout)+','+str('%.5f'%accel_yout)+','+str('%.5f'%accel_zout)
+
+                if DEBUG_MODE == 1:
+                    print(string)
+                else:
+                    txt += string+'\n'
+        except DeviceRangeError as e:
+            print(e)
+            return 
+        except (KeyboardInterrupt,EOFError):
+            if DEBUG_MODE == 0:
+                path = './test.txt'
+                with open(path,'w') as fd:
+                    fd.write('%s %s \n' % (args.timestamp, args.name))
+                    fd.write(txt)
+            sys.exit(1)
+
 
 if __name__ == "__main__":
+
     #parser init
     parser = argparse.ArgumentParser(description='Process IMU sensing with mpu6500') 
 

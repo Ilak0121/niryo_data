@@ -42,8 +42,8 @@ def sensing(args):
                     #n += 1
                     #print(diff)
         except DeviceRangeError as e:
-            return
             print(e)
+            return
         except (KeyboardInterrupt,EOFError):
             #print("avg"+str(time_avg/n))
             if DEBUG_MODE == 0:
