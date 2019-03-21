@@ -99,8 +99,8 @@ if __name__ == "__main__":
 
     #add parser
     parser.add_argument('-n', '--name', help='-n [TESTCASE_NAME]', required=True) 
-    parser.add_argument('-ts', '--timestamp_start', type=int, required=True, help= '-ts [TIMESTAMP_START]')
-    parser.add_argument('-te', '--timestamp_end', type=int, required=True, help= '-ts [TIMESTAMP_END]')
+    parser.add_argument('-t1', '--start', type=int, required=True, help= '-ts [TIMESTAMP_START]')
+    parser.add_argument('-t2', '--end', type=int, required=True, help= '-ts [TIMESTAMP_END]')
 
     args = parser.parse_args()
     print(args)
