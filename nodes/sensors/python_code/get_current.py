@@ -13,8 +13,13 @@ DEBUG_MODE = 0                                      #save file or print monitor
 
 def sensing(chunk,conn):
 
-    ina = INA219(SHUNT_OHMS)                        #need to accurate
-    ina.configure()
+    #need to accurate
+    ina1 = INA219(SHUNT_OHMS,address=0x40)
+    #ina2 = INA219(SHUNT_OHMS,address=0x41)
+    #ina3 = INA219(SHUNT_OHMS,address=0x42)
+    ina1.configure()
+    #ina2.configure()
+    #ina3.configure()
 
     #received data extraction
     (file_path, start_time, end_time, experiment_type) = chunk 
@@ -46,7 +51,7 @@ def sensing(chunk,conn):
 
             if not re.search(r'0$', string) == None:
                 string += ","
-                string += '%.4f'%ina.current()
+                string += '%.4f'%ina1.current()
 
                 if DEBUG_MODE == 1:
                     print(string)
