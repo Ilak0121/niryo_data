@@ -3,7 +3,6 @@ import re
 import sys
 import time
 import socket
-import argparse
 
 from ina219 import (INA219, DeviceRangeError)
 
@@ -32,16 +31,11 @@ def sensing(chunk,conn):
     save_txt = ''
     while(True): 
         #### first loop for synchronization with each nodes
-        try:
-            current_time = '%.3f'%time.time()
-            if current_time == start_time:
-                break
-        except Exception as e:
-            print(e)
-            conn.sendall("[DEBUG] : time sync waiting loop error occured")
-            conn.sendall("[ERROR] : sensing program terminating....")
-            sys.exit(1)
+        current_time = '%.3f'%time.time()
+        if current_time == start_time:
+            break
 
+    while(True): 
         ###sensing starts
         try:
             string = '%.3f'%time.time()
@@ -71,13 +65,13 @@ def sensing(chunk,conn):
                 #path = file_path #'./test.txt'
                 with open(file_path,'w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
-                    fd.write(save_txt)
+                    fd.write(save_txt) #sensor data
             sys.exit(1)
 
 
 if __name__ == "__main__":
 
-    host = '127.0.0.1' #for socket
+    host = '127.0.0.1' # node's ip address (raspi)
     port = 4000
 
     with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
@@ -92,7 +86,7 @@ if __name__ == "__main__":
                 data = conn.recv(1024)
                 data = json.loads(data.decode())
 
-                sensing(data.get('attr'),conn) #processing
+                #sensing(data.get('attr'),conn) #processing
 
                 conn.sendall("[STATUS] : Sensing program has finished...")
 
