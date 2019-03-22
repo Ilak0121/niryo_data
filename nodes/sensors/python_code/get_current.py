@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
                 sensing(data.get('attr'),conn) #processing
 
-                conn.sendall("[STATUS] : Node program has finished...".encode())
+                conn.sendall("[STATUS] : Sensing finished...".encode())
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
             print("[STATUS] : Node program finishing...")
