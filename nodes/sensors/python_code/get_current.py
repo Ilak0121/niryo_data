@@ -3,6 +3,7 @@ import re
 import sys
 import time
 import socket
+import json
 
 from ina219 import (INA219, DeviceRangeError)
 
@@ -71,7 +72,12 @@ def sensing(chunk,conn):
 
 if __name__ == "__main__":
 
-    host = '127.0.0.1' # node's ip address (raspi)
+    # node's ip address (raspi)
+    node1 = '192.168.1.207' 
+    node2 = '192.168.1.220' 
+    node3 = '192.168.1.54' 
+
+    host  = node1
     port = 4000
 
     with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
