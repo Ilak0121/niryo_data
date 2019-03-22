@@ -8,7 +8,11 @@ def run():
     current_time = '%.3f'%time.time()
     host = '192.168.1.207' #node's ip address / raspberry ip
     port = 4000
-    s.connect((host, port))
+    try:
+        s.connect((host, port))
+    except Exception as e:
+        print("[Debug] : Connection failed")
+        sys.exit(1)
     attr = ['script_name',123456,123456,'timing']
     data = json.dumps({"attr":attr})
     s.sendall(data.encode()) # signal to start sensing
@@ -17,7 +21,7 @@ def run():
             recv = s.recv(1024)
             print(recv.decode())
         except (KeyboardInterrupt, EOFError) as e:
-            print("quit----")
+            print("[DEBUG] : controller program finishing....")
             sys.exit(1)
 
 
