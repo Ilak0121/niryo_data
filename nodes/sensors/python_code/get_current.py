@@ -36,13 +36,12 @@ def sensing(chunk,conn):
         if current_time == start_time:
             break
 
+    conn.sendall("[STATUS] : Node program finishing with ctrl-c....".encode())
+
     while(True): 
         ###sensing starts
         try:
-            string = '%.3f'%time.time()
-            if string == end_time:                              ### need to check for accurate activation!!!!!!
-                raise KeyboardInterrupt 
-                ## To make the program end and save file
+            end_confirm = string = '%.3f'%time.time()
 
             if not re.search(r'0$', string) == None:
                 string += ","
@@ -53,22 +52,34 @@ def sensing(chunk,conn):
                 else:
                     save_txt += string + '\n'                   ###overflow considering after experiment
 
+                if end_confirm == end_time:
+                    ## To make the program end and save file
+                    raise KeyboardInterrupt
+
         ### Exception handler
         except DeviceRangeError as e:
             print(e)
             conn.sendall(("[DEBUG] : ina219 deviceRangeError occured," + e).encode())
-            conn.sendall("[ERROR] : sensing program terminating....".encode())
+            conn.sendall("[ERROR] : Node program terminating....".encode())
             sys.exit(1)
 
         except (KeyboardInterrupt,EOFError):
-            #print("avg"+str(time_avg/n))
             if DEBUG_MODE == 0:
                 #path = file_path #'./test.txt'
                 with open(file_path,'w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
-            sys.exit(1)
+            conn.sendall("[DEBUG] : Node program finishing with ctrl-c....".encode())
+            break
 
+        except SensingFinished:
+            if DEBUG_MODE == 0:
+                #path = file_path #'./test.txt'
+                with open(file_path,'w') as fd:
+                    #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
+                    fd.write(save_txt) #sensor data
+            conn.sendall("[STATUS] : File write complete....".encode())
+            break
 
 if __name__ == "__main__":
 
@@ -82,10 +93,14 @@ if __name__ == "__main__":
 
     with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
         try:
-            s.bind((host,port))
-            s.listen(1)
+            try:
+                s.bind((host,port))
+                s.listen(1)
+            except Exception as e:
+                print("[DEBUG] : bind & listening error, port number confirm or wait for socket arrange")
+                sys.exit(1)
 
-            print("[DEBUG] : node's sensing program starting...")
+            print("[STATUS] : Node program starting...")
 
             while(True):
                 conn, addr = s.accept()
@@ -94,17 +109,17 @@ if __name__ == "__main__":
                 data = conn.recv(1024)
                 data = json.loads(data.decode())
 
-                #sensing(data.get('attr'),conn) #processing
+                sensing(data.get('attr'),conn) #processing
 
-                conn.sendall("[STATUS] : Sensing program has finished...".encode())
+                conn.sendall("[STATUS] : Node program has finished...".encode())
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
-            print("[DEBUG] : node's sensing program finishing...")
+            print("[STATUS] : Node program finishing...")
             sys.exit(1)
 
         except Exception as e:
-            conn.sendall("[ERROR] : Sensing program exception event occur!!".encode())
-            conn.sendall("[ERROR] : sensing program terminating....".encode())
+            conn.sendall("[ERROR] : Node program unexpected exception event occur!!".encode())
+            conn.sendall("[ERROR] : Node program terminating....".encode())
             print(e)
             sys.exit(1)
 
