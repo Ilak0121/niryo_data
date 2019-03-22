@@ -55,8 +55,8 @@ def sensing(chunk,conn):
         ### Exception handler
         except DeviceRangeError as e:
             print(e)
-            conn.sendall("[DEBUG] : ina219 deviceRangeError occured," + e)
-            conn.sendall("[ERROR] : sensing program terminating....")
+            conn.sendall(("[DEBUG] : ina219 deviceRangeError occured," + e).encode())
+            conn.sendall("[ERROR] : sensing program terminating....".encode())
             sys.exit(1)
 
         except (KeyboardInterrupt,EOFError):
@@ -81,21 +81,21 @@ if __name__ == "__main__":
 
             while(True):
                 conn, addr = s.accept()
-                conn.sendall("[STATUS] : socket listening...")
+                conn.sendall("[STATUS] : socket listening...".encode())
 
                 data = conn.recv(1024)
                 data = json.loads(data.decode())
 
                 #sensing(data.get('attr'),conn) #processing
 
-                conn.sendall("[STATUS] : Sensing program has finished...")
+                conn.sendall("[STATUS] : Sensing program has finished...".encode())
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
             sys.exit(1)
 
         except Exception as e:
-            conn.sendall("[ERROR] : Sensing program exception event occur!!")
-            conn.sendall("[ERROR] : sensing program terminating....")
+            conn.sendall("[ERROR] : Sensing program exception event occur!!".encode())
+            conn.sendall("[ERROR] : sensing program terminating....".encode())
             print(e)
             sys.exit(1)
 
