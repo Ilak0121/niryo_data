@@ -85,9 +85,11 @@ if __name__ == "__main__":
             s.bind((host,port))
             s.listen(1)
 
+            print("[DEBUG] : node's sensing program starting...")
+
             while(True):
                 conn, addr = s.accept()
-                conn.sendall("[STATUS] : socket listening...".encode())
+                conn.sendall("[STATUS] : socket connection established...".encode())
 
                 data = conn.recv(1024)
                 data = json.loads(data.decode())
@@ -97,6 +99,7 @@ if __name__ == "__main__":
                 conn.sendall("[STATUS] : Sensing program has finished...".encode())
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
+            print("[DEBUG] : node's sensing program finishing...")
             sys.exit(1)
 
         except Exception as e:
