@@ -72,7 +72,7 @@ def sensing(chunk,conn):
             conn.sendall("[DEBUG] : Node program finishing with ctrl-c....".encode())
             break
 
-        except SensingFinished:
+        except SensingFinished:  #exception should be making
             if DEBUG_MODE == 0:
                 #path = file_path #'./test.txt'
                 with open(file_path,'w') as fd:
