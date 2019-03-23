@@ -26,9 +26,6 @@ def sensing(chunk,conn):
 
     p = re.compile('0$') #10ms is the period
 
-    #print("shunt_voltage:%.3f mA"%ina.shunt_voltage())
-    #print("bus voltage:%.3f mA"%ina.voltage())
-
     save_txt = ''
     while(True): 
         #### first loop for synchronization with each nodes
@@ -36,7 +33,7 @@ def sensing(chunk,conn):
         if current_time == start_time:
             break
 
-    conn.sendall("[STATUS] : Node program finishing with ctrl-c....".encode())
+    conn.sendall("[STATUS] : Node program starts as type of "+experiment_type+"....".encode())
 
     while(True): 
         ###sensing starts
@@ -78,7 +75,7 @@ def sensing(chunk,conn):
                 with open(file_path,'w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
-            conn.sendall("[STATUS] : File write complete....".encode())
+            conn.sendall("[STATUS] : sensing program finishing completely....".encode())
             break
 
 if __name__ == "__main__":
@@ -110,8 +107,6 @@ if __name__ == "__main__":
                 data = json.loads(data.decode())
 
                 sensing(data.get('attr'),conn) #processing
-
-                conn.sendall("[STATUS] : Sensing finished...".encode())
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
             print("[STATUS] : Node program finishing...")
