@@ -85,7 +85,7 @@ if __name__ == "__main__":
     node2 = '192.168.1.220' 
     node3 = '192.168.1.54' 
 
-    host  = node1
+    host = node1
     port = 4000
 
     with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
@@ -97,7 +97,7 @@ if __name__ == "__main__":
                 print("[DEBUG] : bind & listening error, port number confirm or wait for socket arrange")
                 sys.exit(1)
 
-            print("[STATUS] : Node program starting...")
+            print("[STATUS] : Node1 program starting...")
 
             while(True):
                 conn, addr = s.accept()
@@ -109,12 +109,12 @@ if __name__ == "__main__":
                 sensing(data.get('attr'),conn) #processing
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
-            print("[STATUS] : Node program finishing...")
+            print("[STATUS] : Node1 program finishing...")
             sys.exit(1)
 
         except Exception as e:
-            conn.sendall("[ERROR] : Node program unexpected exception event occur!!".encode())
-            conn.sendall("[ERROR] : Node program terminating....".encode())
+            conn.sendall("[ERROR] : Node1 program unexpected exception event occur!!".encode())
+            conn.sendall("[ERROR] : Node1 program terminating....".encode())
             print(e)
             sys.exit(1)
 

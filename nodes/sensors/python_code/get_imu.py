@@ -3,7 +3,9 @@ import os.path
 import re
 import sys
 import time
-import argparse
+import socket
+import json
+
 import smbus
 import math
  
@@ -93,4 +95,42 @@ def sensing(args):
 
 
 if __name__ == "__main__":
-    sensing(args)
+    
+    # node's ip address (raspi)
+    node1 = '192.168.1.207' 
+    node2 = '192.168.1.220' 
+    node3 = '192.168.1.54' 
+
+    host = node3
+    port = 4000
+
+    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
+        try:
+            try:
+                s.bind((host,port))
+                s.listen(1)
+            except Exception as e:
+                print("[DEBUG] : bind & listening error, port number confirm or wait for socket arrange")
+                sys.exit(1)
+
+            print("[STATUS] : Node3 program starting...")
+
+            while(True):
+                conn, addr = s.accept()
+                conn.sendall("[STATUS] : socket connection established...".encode())
+
+                data = conn.recv(1024)
+                data = json.loads(data.decode())
+
+                sensing(data.get('attr'),conn) #processing
+
+        except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
+            print("[STATUS] : Node3 program finishing...")
+            sys.exit(1)
+
+        except Exception as e:
+            conn.sendall("[ERROR] : Node3 program unexpected exception event occur!!".encode())
+            conn.sendall("[ERROR] : Node3 program terminating....".encode())
+            print(e)
+            sys.exit(1)
+
