@@ -33,7 +33,7 @@ def sensing(chunk,conn):
         if current_time == start_time:
             break
 
-    conn.sendall("[STATUS] : Node program starts as type of "+experiment_type+"....".encode())
+    conn.sendall(("[STATUS] : Node program starts as type of "+experiment_type+"....").encode())
 
     while(True): 
         ###sensing starts
