@@ -143,14 +143,14 @@ if __name__ == "__main__":
 
             while(True):
                 conn, addr = s.accept()
-                conn.sendall("[STATUS] : socket connection established...".encode())
+                conn.sendall("[STATUS] : Node3 socket connection established...".encode())
 
                 data = conn.recv(1024)
                 data = json.loads(data.decode())
                 print(data)
 
-                sensing(data.get('attr'),conn) #processing
-                conn.sendall("[STATUS] : Sensing finished...".encode()) #key data to finish
+                #sensing(data.get('attr'),conn) #processing
+                #conn.sendall("[STATUS] : Sensing finished...".encode()) #key data to finish
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
             print("[STATUS] : Node3 program finishing...")

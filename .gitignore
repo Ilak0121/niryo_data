@@ -2,4 +2,6 @@ current
 test
 node
 
+__pycache__
+
 *.swp
