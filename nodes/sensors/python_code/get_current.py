@@ -33,7 +33,7 @@ def sensing(chunk,conn):
         if current_time == start_time:
             break
 
-    conn.sendall("[STATUS] : Node program starts as type of "+experiment_type+"....".encode())
+    conn.sendall(("[STATUS] : Node program starts as type of "+experiment_type+"....").encode())
 
     while(True): 
         ###sensing starts
@@ -107,6 +107,8 @@ if __name__ == "__main__":
                 data = json.loads(data.decode())
 
                 sensing(data.get('attr'),conn) #processing
+
+                conn.sendall("[STATUS] : Sensing finished...".encode())
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
             print("[STATUS] : Node1 program finishing...")
