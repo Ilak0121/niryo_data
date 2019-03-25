@@ -6,6 +6,7 @@ import socket
 import json
 
 from ina219 import (INA219, DeviceRangeError)
+from sensingfinished import SensingFinished
 
 SHUNT_OHMS = 0.1
 
@@ -51,7 +52,7 @@ def sensing(chunk,conn):
 
                 if end_confirm == end_time:
                     ## To make the program end and save file
-                    raise KeyboardInterrupt
+                    raise SensingFinished
 
         ### Exception handler
         except DeviceRangeError as e:
