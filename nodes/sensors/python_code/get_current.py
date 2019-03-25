@@ -16,11 +16,12 @@ def sensing(chunk,conn):
 
     #need to accurate
     ina1 = INA219(SHUNT_OHMS,address=0x40)
-    #ina2 = INA219(SHUNT_OHMS,address=0x41)
-    #ina3 = INA219(SHUNT_OHMS,address=0x42)
+    ina2 = INA219(SHUNT_OHMS,address=0x41)
+    ina3 = INA219(SHUNT_OHMS,address=0x44)
+    #
     ina1.configure()
-    #ina2.configure()
-    #ina3.configure()
+    ina2.configure()
+    ina3.configure()
 
     #received data extraction
     (file_path, start_time, end_time, experiment_type) = chunk 
@@ -34,7 +35,7 @@ def sensing(chunk,conn):
         if current_time == start_time:
             break
 
-    conn.sendall(("[STATUS] : Node program starts as type of "+experiment_type+"....").encode())
+    conn.sendall(("[STATUS] : Node1 program starts as type of "+experiment_type+"....").encode())
 
     while(True): 
         ###sensing starts
@@ -42,16 +43,16 @@ def sensing(chunk,conn):
             end_confirm = string = '%.3f'%time.time()
 
             if not re.search(r'0$', string) == None:
-                string += ","
-                string += '%.4f'%ina1.current()
+                string += ,'%.4f'%ina1.current()
+                string += ,'%.4f'%ina2.current()
+                string += ,'%.4f'%ina3.current()
 
                 if DEBUG_MODE == 1:
                     print(string)
                 else:
                     save_txt += string + '\n'                   ###overflow considering after experiment
 
-                if end_confirm == end_time:
-                    ## To make the program end and save file
+                if end_confirm == end_time: ## To make the program end and save file
                     raise SensingFinished
 
         ### Exception handler
@@ -76,7 +77,7 @@ def sensing(chunk,conn):
                 with open(file_path,'w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
-            conn.sendall("[STATUS] : sensing program finishing completely....".encode())
+            conn.sendall("[STATUS] : Sensing program finishing completely....".encode())
             break
 
 if __name__ == "__main__":
@@ -95,7 +96,7 @@ if __name__ == "__main__":
                 s.bind((host,port))
                 s.listen(1)
             except Exception as e:
-                print("[DEBUG] : bind & listening error, port number confirm or wait for socket arrange")
+                print("[DEBUG] : Bind & Listening error, port number confirm or wait for socket arrange")
                 sys.exit(1)
 
             print("[STATUS] : Node1 program starting...")
