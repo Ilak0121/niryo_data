@@ -16,19 +16,19 @@ def run(experiment_type):
     port = 4000
 
     try:
-        #s2 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s2 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s1.connect((node1, port))
-        #s2.connect((node3, port))
+        s2.connect((node3, port))
     except Exception as e:
         print("[ERROR] : Remote Node Program Connection Failed")
-        #s2.close()
+        s2.close()
         sys.exit(1)
     attr = ['first_file_name',start_time,end_time,experiment_type]
     print("[INFO] : Experiment type <"+experiment_type+"> starts...")
     print("[INFO] : Nodes will start at "+ str(start_time)+" and terminates at "+str(end_time))
     data = json.dumps({"attr":attr})
     s1.sendall(data.encode()) # signal to start sensing
-    #s2.sendall(data.encode()) # signal to start sensing
+    s2.sendall(data.encode()) # signal to start sensing
     while(True):
         try:
             recv = s1.recv(1024)
@@ -38,7 +38,7 @@ def run(experiment_type):
             print(recv.decode())
         except (KeyboardInterrupt, EOFError) as e:
             print("[STATUS] : Control Program finishing....")
-            #s2.close()
+            s2.close()
             sys.exit(1)
 
 if __name__ == '__main__':
@@ -49,6 +49,3 @@ if __name__ == '__main__':
 
     run(args.type)
     
-
-
-
