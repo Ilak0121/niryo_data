@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
             while(True):
                 conn, addr = s.accept()
-                conn.sendall("[STATUS] : socket connection established...".encode())
+                conn.sendall("[STATUS] : Node1 socket connection established...".encode())
 
                 data = conn.recv(1024)
                 data = json.loads(data.decode())
