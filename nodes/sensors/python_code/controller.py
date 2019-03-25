@@ -13,7 +13,8 @@ def test(s):
     while(True):
         recv = s.recv(1024).decode()
         if(recv == "[STATUS] : Sensing finished..."):
-            raise KeyboardInterrupt
+            s.close()
+            break
         print(recv)
 
 def run(experiment_type):
@@ -40,23 +41,22 @@ def run(experiment_type):
     data = json.dumps({"attr":attr})
     s1.sendall(data.encode()) # signal to start sensing
     s2.sendall(data.encode()) # signal to start sensing
-    while(True):
-        try:
-            jobs = [gevent.spawn(test,_s) for _s in [s1,s2]]
-            gevent.wait(jobs)
-            '''
-            recv = s1.recv(1024).decode()
-            #condition to terminate connection
-            if(recv == "[STATUS] : Sensing finished..."):
-                raise KeyboardInterrupt
-            print(recv)
-            '''
+    #while(True):
+    try:
+        jobs = [gevent.spawn(test,_s) for _s in [s1,s2]]
+        gevent.wait(jobs)
+        '''
+        recv = s1.recv(1024).decode()
+        #condition to terminate connection
+        if(recv == "[STATUS] : Sensing finished..."):
+            raise KeyboardInterrupt
+        print(recv)
+        '''
 
-        except (KeyboardInterrupt, EOFError) as e:
-            print("[STATUS] : Control Program finishing....")
-            if not s2 == None:
-                s2.close()
-            sys.exit(1)
+    except (KeyboardInterrupt, EOFError) as e:
+        print("[STATUS] : Control Program finishing....")
+        s2.close()
+        sys.exit(1)
 
 
 
