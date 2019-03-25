@@ -25,20 +25,19 @@ def sensing(chunk,conn):
 
     #received data extraction
     (file_path, start_time, end_time, experiment_type) = chunk 
-
     p = re.compile('0$') #10ms is the period
 
     save_txt = ''
+    #### first loop for synchronization with each nodes
     while(True): 
-        #### first loop for synchronization with each nodes
         current_time = '%.3f'%time.time()
         if current_time == start_time:
             break
 
     conn.sendall(("[STATUS] : Node1 program starts as type of "+experiment_type+"....").encode())
 
+    ###sensing starts
     while(True): 
-        ###sensing starts
         try:
             end_confirm = string = '%.3f'%time.time()
 
@@ -59,7 +58,7 @@ def sensing(chunk,conn):
         except DeviceRangeError as e:
             print(e)
             conn.sendall(("[DEBUG] : ina219 deviceRangeError occured," + e).encode())
-            conn.sendall("[ERROR] : Node program terminating....".encode())
+            conn.sendall("[ERROR] : Node1 program terminating....".encode())
             sys.exit(1)
 
         except (KeyboardInterrupt,EOFError):
@@ -68,7 +67,7 @@ def sensing(chunk,conn):
                 with open(file_path,'w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
-            conn.sendall("[DEBUG] : Node program finishing with ctrl-c....".encode())
+            conn.sendall("[DEBUG] : Node1 program finishing with ctrl-c....".encode())
             break
 
         except SensingFinished:  #exception should be making
@@ -77,7 +76,7 @@ def sensing(chunk,conn):
                 with open(file_path,'w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
-            conn.sendall("[STATUS] : Sensing program finishing completely....".encode())
+            conn.sendall("[STATUS] : Node1 Sensing program finishing completely....".encode())
             break
 
 if __name__ == "__main__":
@@ -110,7 +109,7 @@ if __name__ == "__main__":
 
                 sensing(data.get('attr'),conn) #processing
 
-                conn.sendall("[STATUS] : Sensing finished...".encode())
+                conn.sendall("[STATUS] : Sensing finished...".encode()) #key data to finish
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
             print("[STATUS] : Node1 program finishing...")
