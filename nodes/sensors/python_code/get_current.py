@@ -42,9 +42,9 @@ def sensing(chunk,conn):
             end_confirm = string = '%.3f'%time.time()
 
             if not re.search(r'0$', string) == None:
-                string += ,'%.4f'%ina1.current()
-                string += ,'%.4f'%ina2.current()
-                string += ,'%.4f'%ina3.current()
+                string += ',%.4f'%ina1.current()
+                string += ',%.4f'%ina2.current()
+                string += ',%.4f'%ina3.current()
 
                 if DEBUG_MODE == 1:
                     print(string)
