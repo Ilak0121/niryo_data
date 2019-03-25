@@ -122,7 +122,8 @@ if __name__ == "__main__":
                 data = conn.recv(1024)
                 data = json.loads(data.decode())
 
-                sensing(data.get('attr'),conn) #processing
+                #sensing(data.get('attr'),conn) #processing
+                print(data)
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
             print("[STATUS] : Node3 program finishing...")
