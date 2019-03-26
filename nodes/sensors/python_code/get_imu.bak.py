@@ -49,6 +49,9 @@ def get_x_rotation(x,y,z):
  
 def sensing():
     global bus
+    global address
+    global DEBUG_MODE
+
     bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
     address = 0x68       # via i2cdetect
     bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
@@ -62,18 +65,14 @@ def sensing():
     start_time = str(float('%.3f'%time.time())+1)
     end_time = str(float('%.3f'%time.time())+3)
     #### first loop for synchronization with each nodes
-    while(True): 
-        current_time = '%.3f'%time.time()
-        if current_time == start_time:
-            break
-
 
     ###sensing starts
+    print("test")
     while(True):
         try:
-            end_confirm = string = '%.3f'%time.time()
+            
+                string = ''
 
-            if not re.search(r'0$',string) == None:
                 # time testing needed and have to adjust
                 gyro_xout = read_word_2c(0x43)
                 gyro_yout = read_word_2c(0x45)
@@ -99,8 +98,6 @@ def sensing():
                 else:
                     save_txt += string+'\n'
             ### overflow test needed after experiment
-                if end_confirm == end_time:
-                    raise SensingFinished
 
         except (KeyboardInterrupt,EOFError):
             if DEBUG_MODE == 0:
