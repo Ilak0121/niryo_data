@@ -1,1 +1,1 @@
-python controller.py -f test -t test -d 1
+python controller.py -f test -t test -d 8

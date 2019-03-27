@@ -20,7 +20,7 @@ def test(s):
 def run(experiment_type,duration,file_name):
   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s1:
     current_time = float('%.3f'%time.time())
-    start_time = '%.3f'%(round(current_time,2)+2)
+    start_time = '%.3f'%(round(current_time,2)+3)
     end_time = '%.3f'%(round(current_time,2)+duration+2)
 
     node1 = '192.168.1.207' #node's ip address / raspberry ip
@@ -41,7 +41,7 @@ def run(experiment_type,duration,file_name):
         s4.close()                                          ##socket close
         sys.exit(1)
     attr = [file_name,start_time,end_time,experiment_type]
-    print("[INFO] : Experiment type <"+experiment_type+"> starts...")
+    print("[INFO] : Experiment type <"+experiment_type+"> starts at "+str(time.time()))
     print("[INFO] : Nodes will start at ("+ str(start_time)+") and terminates at ("+str(end_time)+")")
     data = json.dumps({"attr":attr})
 
