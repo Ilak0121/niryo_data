@@ -14,7 +14,25 @@ n=NiryoOne()
 
 conn = None
 
-def case1():
+def case1(chunk,conn):
+
+    (file_path, start_time, end_time, experiment_type) = chunk 
+    start_time=str(float(start_time))
+    end_time=float(end_time)+2
+    ## start time same?
+    ## end time -2? compare to sensors?
+    p = re.compile('0$') #10ms is the period
+
+    print("first loop start")
+
+    print("[INFO] : start_time is "+start_time)
+    while(True): 
+        current_time = '%.3f'%time.time()
+        print("[INFO] : current_time is "+current_time)
+        if current_time == start_time:
+            break
+    print("motion start")
+    #-----------------start motions-----------------#
     n.calibrate_manual()
     #n.move_pose(0,0,0,0,0,0)
     n.move_joints([0,0,0,0,0,0])
@@ -23,7 +41,13 @@ def case1():
     n.move_joints([1.1,-1,-0.6,0,0,0])
 
     n.activate_learning_mode(True)
+    #-----------------finishing motions-------------#
+    real_end_time = float("%.3f"%time.time())
+    if end_time < real_end_time:
+        conn.sendall("[ERROR] : Node4 finished after sensing finished...".encode())
+        raise Exception
 
+    conn.sendall("[STATUS] : Node4 Acting program finishing completely....".encode())
 
 if __name__=="__main__":
 
@@ -47,15 +71,17 @@ if __name__=="__main__":
         while(True):
             conn, addr = s.accept()
             conn.sendall("[STATUS] : Node4 socket connection established...".encode())
-            conn.sendall("[STATUS] : Node4 program finishing completely....".encode())
+           
+            data = conn.recv(1024)
+            data = json.loads(data.decode())
 
-            start = time.time()
-            case1()
-            end = time.time()
+            #start = time.time()
+            case1(data.get('attr'),conn)# case motion
+            #end = time.time()
+            #conn.sendall("[INFO] : Duration Time : {}...".format(str(end-start)).encode())
+            conn.sendall("[INFO] : timestamp is "+str(time.time()))
 
-            conn.sendall("[INFO] : Duration Time : {}...".format(str(end-start)).encode())
             time.sleep(0.5)
-
             conn.sendall("[STATUS] : Sensing finished...".encode()) #key data to finish
 
     except NiryoOneException as e:
