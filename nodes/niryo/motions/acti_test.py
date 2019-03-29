@@ -26,11 +26,13 @@ def case1(chunk,conn):
     print("first loop start")
 
     print("[INFO] : start_time is "+start_time)
+    ''' first test  without start sync code and than checkout what is the problem
     while(True): 
         current_time = '%.3f'%time.time()
         print("[INFO] : current_time is "+current_time)
         if current_time == start_time:
             break
+    '''
     print("motion start")
     #-----------------start motions-----------------#
     n.calibrate_manual()
