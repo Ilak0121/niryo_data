@@ -5,17 +5,16 @@ import sys
 
 rospy.init_node('niryo_one_example_python_api')
 
-print "[STATUS] : Niryo Robot Learning Mode Start"
+print "[STATUS] : Niryo Robot <Calibrating> & <Learning Mode> start...."
 
 n=NiryoOne()
 
 try:
     n.calibrate_manual()
-    
     n.activate_learning_mode(True)
 
 except NiryoOneException as e:
     print "[DEBUG] : Niryo Robot Exception occured!!"
     print e
 
-print "[STATUS] : Niryo Robot Learning Mode Finished."
+print "[STATUS] : Niryo Robot <Calibrating> & <Learning Mode> finished...."
