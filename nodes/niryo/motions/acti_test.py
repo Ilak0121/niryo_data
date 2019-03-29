@@ -17,8 +17,7 @@ conn = None
 def case1(chunk,conn):
 
     (file_path, start_time, end_time, experiment_type) = chunk 
-    start_time='%.3f' % (float(start_time)) #trouble shooting ; python2 str(float) goes to '.2f'
-    end_time=float(end_time)+2
+    start_time='%.3f' % (float(start_time)+0.5) #trouble shooting ; python2 str(float) goes to '.2f'
     ## start time same?
     ## end time -2? compare to sensors?
 
@@ -45,6 +44,7 @@ def case1(chunk,conn):
     #-----------------finishing motions-------------#
 
     real_end_time = float("%.3f"%time.time())
+    print(("[INFO] : real_end_time:" + '%.3f'%real_end_time + ', end_time : '+end_time).encode())
     if end_time < real_end_time:
         conn.sendall("[ERROR] : Node4 finished eariler than sensing finished...".encode())
         raise Exception
@@ -81,7 +81,7 @@ if __name__=="__main__":
             case1(data.get('attr'),conn)# case motion
             #end = time.time()
             #conn.sendall("[INFO] : Duration Time : {}...".format(str(end-start)).encode())
-            conn.sendall("[INFO] : timestamp is "+str(time.time()))
+            #conn.sendall("[INFO] : timestamp is "+str(time.time()))
 
             time.sleep(0.5)
             conn.sendall("[STATUS] : Sensing finished...".encode()) #key data to finish
