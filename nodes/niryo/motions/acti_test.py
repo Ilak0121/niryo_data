@@ -17,23 +17,22 @@ conn = None
 def case1(chunk,conn):
 
     (file_path, start_time, end_time, experiment_type) = chunk 
-    start_time=str(float(start_time))
+    start_time='%.3f' % (float(start_time)) #trouble shooting ; python2 str(float) goes to '.2f'
     end_time=float(end_time)+2
     ## start time same?
     ## end time -2? compare to sensors?
-    p = re.compile('0$') #10ms is the period
 
-    print("first loop start")
+    ###p = re.compile('0$') #10ms period / not need here, niryo
 
-    print("[INFO] : start_time is "+start_time)
-    ''' first test  without start sync code and than checkout what is the problem
+    conn.sendall("[STATUS] : Niryo start time waitting...".encode())
+
     while(True): 
         current_time = '%.3f'%time.time()
-        print("[INFO] : current_time is "+current_time)
         if current_time == start_time:
             break
-    '''
-    print("motion start")
+
+    conn.sendall(("[STATUS] : Niryo motion starts as type of "+experiment_type+"....").encode())
+
     #-----------------start motions-----------------#
     n.calibrate_manual()
     #n.move_pose(0,0,0,0,0,0)
@@ -44,12 +43,13 @@ def case1(chunk,conn):
 
     n.activate_learning_mode(True)
     #-----------------finishing motions-------------#
+
     real_end_time = float("%.3f"%time.time())
     if end_time < real_end_time:
-        conn.sendall("[ERROR] : Node4 finished after sensing finished...".encode())
+        conn.sendall("[ERROR] : Node4 finished eariler than sensing finished...".encode())
         raise Exception
-
-    conn.sendall("[STATUS] : Node4 Acting program finishing completely....".encode())
+    else:
+        conn.sendall("[STATUS] : Node4(niryo) motion script finished completely..".encode())
 
 if __name__=="__main__":
 
