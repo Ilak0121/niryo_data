@@ -16,6 +16,8 @@ if __name__ =="__main__":
         fd = pd.merge(fd1,fd2)
         fd = fd.set_index('timestamp').sort_index(axis=1)
 
+        fd['4']=fd['4'].subtract(fd['5']) #4 axis motor gets current including 5axis.
+
         if not fd.isnull().values.any() == False:
             print("[WARN] : "+str(i)+"'s file has nan values!!"
 
