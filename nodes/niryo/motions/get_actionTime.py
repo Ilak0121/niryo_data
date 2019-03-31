@@ -38,7 +38,12 @@ def case1():
     '''
     #-----------------finishing motions-------------#
 if __name__=="__main__":
+    print("[STATUS] : Niryo Time getting Script Mode Start")
     try:
+        start_time = time.time()
         case1()
+        end_time = time.time()
+        print("[INFO] : case's performing time is <"+'%.3f'%(end_time-start_time)+">")
+        print("[STATUS] : Niryo Time getting Script Mode Finishing...")
     except NiryoOneException as e:
         print e
