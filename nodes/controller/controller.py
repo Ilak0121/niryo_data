@@ -12,6 +12,10 @@ monkey.patch_all()
 def test(s):
     while(True):
         recv = s.recv(1024).decode()
+        if(recv[0:7] == "[ERROR]"):
+            s.close()
+            print(recv)
+            break
         if(recv == "[STATUS] : Sensing finished..."):
             s.close()
             break
