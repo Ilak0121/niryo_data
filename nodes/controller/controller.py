@@ -31,13 +31,16 @@ def run(experiment_type,duration,file_name):
 
     try:
         s2 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s3 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s4 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s1.connect((node1, port))
         s2.connect((node2, port))
+        s3.connect((node3, port))
         s4.connect((node4, port))                           ##socket connection
     except Exception as e:
         print("[ERROR] : Remote Node Program Connection Failed")
         s2.close()
+        s3.close()
         s4.close()                                          ##socket close
         sys.exit(1)
     attr = [file_name,start_time,end_time,experiment_type]
@@ -47,15 +50,17 @@ def run(experiment_type,duration,file_name):
 
     s1.sendall(data.encode()) # signal to start sensing
     s2.sendall(data.encode()) # signal to start sensing
+    s3.sendall(data.encode()) # signal to start sensing
     s4.sendall(data.encode()) # signal to start sensing     
 
     try:
-        jobs = [gevent.spawn(test,_s) for _s in [s1,s2,s4]]
+        jobs = [gevent.spawn(test,_s) for _s in [s1,s2,s3,s4]]
         gevent.wait(jobs)
 
     except (KeyboardInterrupt, EOFError) as e:
         print("[STATUS] : Control Program finishing....")
         s2.close()
+        s3.close()
         s4.close()                                          ##socket close
 
 
