@@ -147,7 +147,7 @@ if __name__ == "__main__":
                 data = json.loads(data.decode())
                 print(data)
 
-                sensing(data.get('attr'),conn) #processing
+                #sensing(data.get('attr'),conn) #processing
                 conn.sendall("[STATUS] : Sensing finished...".encode()) #key data to finish
 
         except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
