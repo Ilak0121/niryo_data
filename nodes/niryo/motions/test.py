@@ -4,18 +4,19 @@ import time
 
 rospy.init_node('niryo_one_example_python_api')
 
-print "---start"
+print("---start")
 
 n=NiryoOne()
 
 try:
     #move_pose(0,0,0,0,0,0)
-    n.calibrate_auto()
-    n.move_joints([0,0,0,0,0,0])
+    n.calibrate_manual()
+    #n.move_joints([0,0,0,0,0,0])
     
-    time.sleep(1)
-    n.move_joints([1.1,-1,-0.6,0,0,0])
-    
+    #time.sleep(1)
+    #n.move_joints([1.1,-1,-0.6,0,0,0])
+    n.activate_learning_mode(True)
+    '''
     time.sleep(1)
     n.move_joints([1.1,0,0,0,0,0])
     
@@ -30,6 +31,7 @@ try:
 
     time.sleep(1)
     n.move_joints([0,0,-1.3,0,0,0])
+    '''
     
     '''
     while a<5:
@@ -41,8 +43,7 @@ try:
         a=a+1
     '''
     #n.calibrate_auto()
-    print "finishing"
+    print("finishing")
 
 except NiryoOneException as e:
-    print e
-print "--end"
+    print(e)

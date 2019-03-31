@@ -35,7 +35,7 @@ def run(experiment_type):
         print("[ERROR] : Remote Node Program Connection Failed")
         s2.close()
         sys.exit(1)
-    attr = ['This_is_Sparta',start_time,end_time,experiment_type]
+    attr = ['Test_file_name',start_time,end_time,experiment_type]
     print("[INFO] : Experiment type <"+experiment_type+"> starts...")
     print("[INFO] : Nodes will start at ("+ str(start_time)+") and terminates at ("+str(end_time)+")")
     data = json.dumps({"attr":attr})
@@ -56,7 +56,6 @@ def run(experiment_type):
     except (KeyboardInterrupt, EOFError) as e:
         print("[STATUS] : Control Program finishing....")
         s2.close()
-        sys.exit(1)
 
 
 
