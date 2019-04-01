@@ -1,0 +1,33 @@
+1's normal / collision rms : 3233.4 / 3264.98
+1's normal / collision mean : 85.78 / 86.14
+---------------------------------
+2's normal / collision rms : 3321.6 / 3287.39
+2's normal / collision mean : 87.89 / 87.44
+---------------------------------
+3's normal / collision rms : 3515.62 / 3610.0
+3's normal / collision mean : 93.75 / 95.0
+---------------------------------
+4's normal / collision rms : 3419.39 / 3432.63
+4's normal / collision mean : 89.75 / 89.87
+---------------------------------
+5's normal / collision rms : 3895.84 / 3813.56
+5's normal / collision mean : 102.79 / 101.69
+---------------------------------
+6's normal / collision rms : 3429.5 / 3365.67
+6's normal / collision mean : 90.25 / 89.52
+---------------------------------
+7's normal / collision rms : 3365.67 / 3420.46
+7's normal / collision mean : 89.52 / 90.24
+---------------------------------
+8's normal / collision rms : 3834.33 / 3856.62
+8's normal / collision mean : 101.46 / 101.75
+---------------------------------
+9's normal / collision rms : 3583.77 / 3602.14
+9's normal / collision mean : 94.07 / 94.31
+---------------------------------
+10's normal / collision rms : 3662.28 / 3643.39
+10's normal / collision mean : 96.9 / 96.65
+---------------------------------
+total normal rms :3526.14,collision rms:3529.68
+total normal mean :93.22,collision mean:93.26
+
