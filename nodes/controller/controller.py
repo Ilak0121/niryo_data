@@ -37,6 +37,7 @@ def run(experiment_type,duration,file_name):
 
     try:
         s2 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s3 = None
         if OPTION == 3:
             s3 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s4 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
