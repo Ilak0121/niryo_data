@@ -108,6 +108,7 @@ if __name__ == "__main__":
                 data = json.loads(data.decode())
 
                 sensing(data.get('attr'),conn) #processing
+                time.sleep(0.5)
 
                 conn.sendall("[STATUS] : Sensing finished...".encode()) #key data to finish
 
