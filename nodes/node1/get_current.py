@@ -64,7 +64,7 @@ def sensing(chunk,conn):
         except (KeyboardInterrupt,EOFError):
             if DEBUG_MODE == 0:
                 #path = file_path #'./test.txt'
-                with open(file_path,'w') as fd:
+                with open(file_path+'a','w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
             conn.sendall("[DEBUG] : Node1 program finishing with ctrl-c....".encode())
@@ -73,7 +73,7 @@ def sensing(chunk,conn):
         except SensingFinished:  #exception should be making
             if DEBUG_MODE == 0:
                 #path = file_path #'./test.txt'
-                with open(file_path,'w') as fd:
+                with open(file_path+'a','w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
             conn.sendall("[STATUS] : Node1 Sensing program finishing completely....".encode())
@@ -118,6 +118,7 @@ if __name__ == "__main__":
 
         except Exception as e:
             conn.sendall("[ERROR] : Node1 program unexpected exception event occur!!".encode())
+            time.sleep(0.1)
             conn.sendall("[ERROR] : Node1 program terminating....".encode())
             print(e)
             sys.exit(1)

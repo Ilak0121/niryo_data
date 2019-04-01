@@ -14,7 +14,7 @@ n=NiryoOne()
 
 conn = None
 
-def case1(chunk,conn):
+def case(chunk,conn):
 
     (file_path, start_time, end_time, experiment_type) = chunk 
     start_time='%.3f' % (float(start_time)+0.5) #trouble shooting ; python2 str(float) goes to '.2f'
@@ -23,7 +23,7 @@ def case1(chunk,conn):
 
     ###p = re.compile('0$') #10ms period / not need here, niryo
 
-    conn.sendall("[STATUS] : Niryo start time waitting...".encode())
+    #conn.sendall("[STATUS] : Niryo start time waitting...".encode())
 
     while(True): 
         current_time = '%.3f'%time.time()
@@ -38,7 +38,8 @@ def case1(chunk,conn):
     n.move_joints([0,0,0,0,0,0])
     
     time.sleep(1)
-    n.move_joints([1.1,-1,-0.6,0,0,0])
+    #n.move_joints([1.1,-1,-0.6,0,0,0])
+    n.move_joints([-1,-1.05,-0.6,0,0,0])
 
     n.activate_learning_mode(True)
     #-----------------finishing motions-------------#
@@ -78,7 +79,7 @@ if __name__=="__main__":
             data = json.loads(data.decode())
 
             #start = time.time()
-            case1(data.get('attr'),conn)# case motion
+            case(data.get('attr'),conn)# case motion
             #end = time.time()
             #conn.sendall("[INFO] : Duration Time : {}...".format(str(end-start)).encode())
             #conn.sendall("[INFO] : timestamp is "+str(time.time()))
