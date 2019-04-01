@@ -14,6 +14,15 @@ n=NiryoOne()
 
 conn = None
 
+def case2():
+    n.calibrate_manual()
+    n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
+    time.sleep(0.3)
+    n.move_joints([-0.667,-0.503,-0.159,0.2,0.01,0])
+    time.sleep(0.3)
+    n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
+    n.activate_learning_mode(True)
+
 def case1():
     #-----------------start motions-----------------#
     #n.move_joints([0,0,-1.39,0,0,0]) calibrate_point
@@ -41,7 +50,7 @@ if __name__=="__main__":
     print("[STATUS] : Niryo Time getting Script Mode Start")
     try:
         start_time = time.time()
-        case1()
+        case2()
         end_time = time.time()
         print("[INFO] : case's performing time is <"+'%.3f'%(end_time-start_time)+">")
         print("[STATUS] : Niryo Time getting Script Mode Finishing...")

@@ -33,21 +33,27 @@ def case(chunk,conn):
     conn.sendall(("[STATUS] : Niryo motion starts as type of "+experiment_type+"....").encode())
 
     #-----------------start motions-----------------#
+    '''
     n.calibrate_manual()
-    #n.move_pose(0,0,0,0,0,0)
     n.move_joints([0,0,0,0,0,0])
-    
-    time.sleep(1)
-    #n.move_joints([1.1,-1,-0.6,0,0,0])
-    n.move_joints([-1,-1.05,-0.6,0,0,0])
-
+    time.sleep(0.3)
+    n.move_joints([0,-0.86,-0.6,0,0,0])
+    time.sleep(0.3)
+    n.activate_learning_mode(True)
+    '''
+    n.calibrate_manual()
+    n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
+    time.sleep(0.3)
+    n.move_joints([-0.667,-0.503,-0.159,0.2,0.01,0])
+    time.sleep(0.3)
+    n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
     n.activate_learning_mode(True)
     #-----------------finishing motions-------------#
 
     real_end_time = float("%.3f"%time.time())
     print(("[INFO] : real_end_time:" + '%.3f'%real_end_time + ', end_time : '+end_time).encode())
-    if end_time < real_end_time:
-        conn.sendall("[ERROR] : Node4 finished eariler than sensing finished...".encode())
+    if float(end_time) < real_end_time:
+        conn.sendall("[WARN] : Node4 finished eariler than sensing finished...".encode())
         raise Exception
     else:
         conn.sendall("[STATUS] : Node4(niryo) motion script finished completely..".encode())
