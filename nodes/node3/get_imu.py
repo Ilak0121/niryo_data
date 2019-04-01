@@ -104,7 +104,7 @@ def sensing(chunk,conn):
 
         except (KeyboardInterrupt,EOFError):
             if DEBUG_MODE == 0:
-                with open(file_path,'w') as fd:
+                with open(file_path+'.csvc','w') as fd:
                     fd.write(save_txt)
             conn.sendall("[DEBUG] : Node3 program finishing with ctrl-c....".encode())
             break
@@ -112,7 +112,7 @@ def sensing(chunk,conn):
         except SensingFinished:  #exception should be making
             if DEBUG_MODE == 0:
                 #path = file_path #'./test.txt'
-                with open(file_path,'w') as fd:
+                with open(file_path+'.csvc','w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
             conn.sendall("[STATUS] : Node3 Sensing program finishing completely....".encode())
