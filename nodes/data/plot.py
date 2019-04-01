@@ -14,14 +14,15 @@ if __name__ == "__main__":
 
     merci = args.file
 
+    plt.style.use('ggplot')
+
     for i in range(1,(int(args.number)+1)):
-        fd = pd.read_csv('./tmp/'+merci+str(i)+'.csv',index_col='timestamp')
-        
-        plt.style.use('ggplot')
         fig = plt.figure()
         fig.suptitle('figure sample plots')
-
         fig, lst = plt.subplots(3,2,figsize=(20,10))
+        fd = pd.read_csv('./tmp/'+merci+str(i)+'.csv',index_col='timestamp')
+        
+
         lst[0][0].plot(fd['1'])
         lst[0][1].plot(fd['2'])
         lst[1][0].plot(fd['3'])
@@ -31,4 +32,7 @@ if __name__ == "__main__":
 
         #plt.show()
         plt.savefig('./tmp/'+merci+str(i)+'.png')
+        plt.cla()
+        plt.close('all')
+        del fig
         #plt.savefig('./dataAnalysis/graph/normal_graph'+str(i)+'.png')

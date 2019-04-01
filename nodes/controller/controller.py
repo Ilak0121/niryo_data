@@ -9,7 +9,7 @@ from gevent import monkey
 
 monkey.patch_all()
 
-OPTION = 0 #0 or 3 //excluding 3 node or not
+OPTION = 3 #0 or 3 //excluding 3 node or not
 
 def test(s):
     while(True):
