@@ -18,7 +18,7 @@ power_mgmt_2 = 0x6c
 bus=0
 address=0
 
-DEBUG_MODE = 0 #not debugging
+DEBUG_MODE = 1 #not debugging
  
 def read_byte(reg):
     return bus.read_byte_data(address, reg)
@@ -47,25 +47,14 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
  
-def sensing(chunk,conn):
+def sensing():
     global bus
     bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
     address = 0x68       # via i2cdetect
     bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
 
-    #received data extraction
-    (file_path, start_time, end_time, experiment_type) = chunk 
-
     p = re.compile('0$') #10ms is the period
     save_txt = ''
-
-    #### first loop for synchronization with each nodes
-    while(True): 
-        current_time = '%.3f'%time.time()
-        if current_time == start_time:
-            break
-
-    conn.sendall(("[STATUS] : Node1 program starts as type of "+experiment_type+"....").encode())
 
     ###sensing starts
     while(True):
@@ -97,15 +86,11 @@ def sensing(chunk,conn):
                     print(string)
                 else:
                     save_txt += string+'\n'
-            ### overflow test needed after experiment
-                if end_confirm == end_time:
-                    raise SensingFinished
 
         except (KeyboardInterrupt,EOFError):
             if DEBUG_MODE == 0:
                 with open(file_path,'w') as fd:
                     fd.write(save_txt)
-            conn.sendall("[DEBUG] : Node3 program finishing with ctrl-c....".encode())
             break
 
         except SensingFinished:  #exception should be making
@@ -114,7 +99,6 @@ def sensing(chunk,conn):
                 with open(file_path,'w') as fd:
                     #fd.write('%s %s \n' % (args.timestamp, args.name)) #meta-data for files
                     fd.write(save_txt) #sensor data
-            conn.sendall("[STATUS] : Node3 Sensing program finishing completely....".encode())
             break
 
 
@@ -128,39 +112,16 @@ if __name__ == "__main__":
 
     host = node3
     port = 4000
+    try:
+        print("[STATUS] : Node3 program Debug starting...")
+        sensing() #processing
 
-    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
-        try:
-            try:
-                s.bind((host,port))
-                s.listen(1)
-            except Exception as e:
-                print("[DEBUG] : Bind & Listening error, port number confirm or wait for socket arrange")
-                sys.exit(1)
+    except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
+        print("[STATUS] : Node3 program DEBUG finishing...")
+        sys.exit(1)
 
-            print("[STATUS] : Node3 program starting...")
-
-            while(True):
-                conn, addr = s.accept()
-                conn.sendall("[STATUS] : Node3 socket connection established...".encode())
-
-                data = conn.recv(1024)
-                data = json.loads(data.decode())
-                #print(data)
-
-                sensing(data.get('attr'),conn) #processing
-                conn.sendall("[STATUS] : Sensing finished...".encode()) #key data to finish
-
-        except (KeyboardInterrupt, EOFError) as e: #ctrl-c let program terminating
-            print("[STATUS] : Node3 program finishing...")
-            sys.exit(1)
-
-        except Exception as e:
-            conn.sendall("[ERROR] : Node3 program unexpected exception event occur!!".encode())
-            time.sleep(0.1)
-            conn.sendall("[ERROR] : Node3 program terminating....".encode())
-            s.close()
-            print(e)
-            sys.exit(1)
+    except Exception as e:
+        print(e)
+        sys.exit(1)
 
 

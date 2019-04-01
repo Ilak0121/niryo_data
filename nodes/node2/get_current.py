@@ -117,6 +117,7 @@ if __name__ == "__main__":
 
         except Exception as e:
             conn.sendall("[ERROR] : Node2 program unexpected exception event occur!!".encode())
+            time.sleep(0.1)
             conn.sendall("[ERROR] : Node2 program terminating....".encode())
             print(e)
             sys.exit(1)
