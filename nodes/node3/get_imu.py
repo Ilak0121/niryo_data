@@ -49,6 +49,7 @@ def get_x_rotation(x,y,z):
  
 def sensing(chunk,conn):
     global bus
+    global address
     bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
     address = 0x68       # via i2cdetect
     bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
@@ -65,7 +66,7 @@ def sensing(chunk,conn):
         if current_time == start_time:
             break
 
-    conn.sendall(("[STATUS] : Node1 program starts as type of "+experiment_type+"....").encode())
+    conn.sendall(("[STATUS] : Node3 program starts as type of "+experiment_type+"....").encode())
 
     ###sensing starts
     while(True):

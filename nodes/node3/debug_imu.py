@@ -49,9 +49,9 @@ def get_x_rotation(x,y,z):
  
 def sensing():
     global bus
+    global address
     bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
     address = 0x68       # via i2cdetect
-    bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
 
     p = re.compile('0$') #10ms is the period
     save_txt = ''
@@ -63,6 +63,7 @@ def sensing():
 
             if not re.search(r'0$',string) == None:
                 # time testing needed and have to adjust
+                bus.write_byte_data(address, power_mgmt_1, 0)  #waking up
                 gyro_xout = read_word_2c(0x43)
                 gyro_yout = read_word_2c(0x45)
                 gyro_zout = read_word_2c(0x47)
