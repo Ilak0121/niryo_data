@@ -1,11 +1,14 @@
 current
 test
 node
-/nodes/data/data_stack
+
+nodes/data/data_stack
 
 __pycache__
 
+auto.sh
 *.swp
 *.pyc
 *.csva
 *.csvb
+*.csvc
