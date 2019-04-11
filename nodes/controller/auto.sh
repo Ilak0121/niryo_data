@@ -1,6 +1,6 @@
 #press ctrl-z and kill it to terminate
-for i in {92..100}
+for i in {1..7}
 do
-    count="collision_MJ${i}"
+    count="attack${i}"
     python3 controller.py -t "${count}'s test" -d 11 -f "${count}"
 done
