@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 import numpy as np
 import argparse
@@ -29,11 +30,27 @@ if __name__ =="__main__":
         fd = pd.merge(fd,fd3)
         fd = fd.set_index('timestamp').sort_index(axis=1)
         fd['4']=fd['4'].subtract(fd['5']) #4 axis motor gets current including 5axis.
+        #cutting
+        log = '../controller/logging/log.'+'col.'+str(i)
+        startT = exceptT = checkT = None
+        with open(log) as lines:
+            for line in lines:
+                if re.match('^\[INFO\] Starting',line) : 
+                    startT = float(line.split(':')[1])
+                elif re.match('^\[INFO\] Exception',line) : 
+                    exceptT = float(line.split(':')[1])
+                elif re.match('^\[INFO\] Checking',line) : 
+                    checkT = float(line.split(':')[1])
+        if not startT == None:
+            fd = fd.loc[float('%.3f'%startT):]
+            if not exceptT == None:
+                fd = fd.loc[:float('%.3f'%exceptT)]
+            elif not checkT == None:
+                fd = fd.loc[:float('%.3f'%checkT)]
+
 
         #fd = pd.merge(fd4,fd3)
         
-
-
         if not fd.isnull().values.any() == False:
             print("[WARN] : "+merci+str(i)+"'s file has nan values!!")
 
