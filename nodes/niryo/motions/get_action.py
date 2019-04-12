@@ -33,18 +33,14 @@ def case(chunk,conn):
     conn.sendall(("[STATUS] : Niryo motion starts as type of "+experiment_type+"....").encode())
 
     #-----------------start motions-----------------#
-    '''
-    n.calibrate_manual()
-    n.move_joints([0,0,0,0,0,0])
-    time.sleep(0.3)
-    n.move_joints([0,-0.86,-0.6,0,0,0])
-    time.sleep(0.3)
-    n.activate_learning_mode(True)
-    '''
     n.calibrate_manual()
     n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
     time.sleep(0.3)
-    n.move_joints([-0.667,-0.503,-0.159,0.2,0.01,0])
+    ##n.move_joints([-1.0,-0.3264,-0.7,0.0,0.0,0])
+    n.move_joints([0,-0.4264,-0.3,-0.0,0,0])
+    conn.sendall(("[INFO] Starting  Time : "+'%.4f'%time.time()).encode())
+    n.move_joints([1.6,-0.4264,-0.3,-0.0,0,0])
+    #n.move_joints([-0.4,-1.32,-0.4,0,0,0])
     time.sleep(0.3)
     n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
     n.activate_learning_mode(True)
@@ -54,7 +50,6 @@ def case(chunk,conn):
     print(("[INFO] : real_end_time:" + '%.3f'%real_end_time + ', end_time : '+end_time).encode())
     if float(end_time) < real_end_time:
         conn.sendall("[WARN] : Node4 finished eariler than sensing finished...".encode())
-        raise Exception
     else:
         conn.sendall("[STATUS] : Node4(niryo) motion script finished completely..".encode())
 
@@ -95,9 +90,8 @@ if __name__=="__main__":
 
     except NiryoOneException as e:
         if not conn == None:
-            conn.sendall("[ERROR] : Node4 program NiryoOneException occur!!".encode())
-            conn.sendall("[ERROR] : Node4 program terminating....".encode())
-            conn.sendall(str(e).encode())
+            conn.sendall(("[INFO] Exception Time : "+'%.4f'%time.time()).encode())
+            conn.sendall(("[ERROR] : Node4 program NiryoOneException occur!!.. terminating.. msg : "+str(e)).encode())
         else: 
             print("[Error] : Niryo Robot NiryoOneException occured!")
             print("[Error] : Error message is : {"+str(e)+"}")
@@ -107,6 +101,7 @@ if __name__=="__main__":
     except Exception as e:
         if not conn == None:
             conn.sendall("[ERROR] : Node4 program unexpected exception event occur!!".encode())
+            time.sleep(0.5)
             conn.sendall("[ERROR] : Node4 program terminating....".encode())
             conn.sendall(str(e).encode())
         else: 
