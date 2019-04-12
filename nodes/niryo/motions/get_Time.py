@@ -18,10 +18,13 @@ def case2():
     n.calibrate_manual()
     n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
     time.sleep(0.3)
-    n.move_joints([-0.667,-0.503,-0.159,0.2,0.01,0])
+    ##n.move_joints([-1.0,-0.3264,-0.7,-0.031,0.01,0])
+    n.move_joints([0,-0.4264,-0.3,-0.0,0,0])
+    n.move_joints([1.6,-0.4264,-0.3,-0.0,0,0])
+    #n.move_joints([-0.4,-1.32,-0.4,0,0,0])
     time.sleep(0.3)
-    n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
-    n.activate_learning_mode(True)
+    #n.move_joints([0,0,-1.39,0,0,0]) #calibrate_point
+    #n.activate_learning_mode(True)
 
 def case1():
     #-----------------start motions-----------------#
