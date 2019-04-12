@@ -1,5 +1,5 @@
 read -p "password? : " password
-sshpass -p "${password}" scp pi@192.168.1.207:/home/pi/Public/.hid/lab_repo/nodes/node1/collision*.csva ./tmp/
-sshpass -p "${password}" scp pi@192.168.1.207:/home/pi/Public/.hid/lab_repo/nodes/node1/normal*.csva ./tmp/
-sshpass -p "${password}" scp pi@192.168.1.220:/home/pi/Public/.hid/lab_repo/nodes/node2/collision*.csvb ./tmp/
-sshpass -p "${password}" scp pi@192.168.1.220:/home/pi/Public/.hid/lab_repo/nodes/node2/normal*.csvb ./tmp/
+
+sshpass -p "${password}" scp pi@192.168.1.207:/home/pi/Public/.hid/lab_repo/nodes/node1/*.csva ./tmp/
+sshpass -p "${password}" scp pi@192.168.1.220:/home/pi/Public/.hid/lab_repo/nodes/node2/*.csvb ./tmp/
+sshpass -p "${password}" scp pi@192.168.1.54:/home/pi/Public/.hid/lab_repo/nodes/node3/*.csvc ./tmp/
