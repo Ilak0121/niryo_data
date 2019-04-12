@@ -1,8 +1,39 @@
 import os
+import time
 import re
 import pandas as pd
 import numpy as np
 import argparse
+
+
+def filtering(fd):
+    return_fd = pd.DataFrame()
+    for j in range(1,7):
+        List=[]
+        Values=[]
+        index_j = str(j)
+        sample = fd[index_j]
+        for k in range(0,len(sample.index)):
+            if k < 3 or k > len(sample)-4:
+                List.append(sample.index[k])
+                Values.append(sample.iloc[k])
+            else:
+                di = 7
+                List.append(sample.index[k])
+                value = ( (1/di)*sample.iloc[k-3]
+                       +(1/di)*sample.iloc[k-2]
+                       +(1/di)*sample.iloc[k-1]
+                       +(1/di)*sample.iloc[k]
+                       +(1/di)*sample.iloc[k+1]
+                       +(1/di)*sample.iloc[k+2]
+                       +(1/di)*sample.iloc[k+3] )
+                Values.append(value)
+        fd_temp = pd.DataFrame({'timestamp':List,index_j+'f':Values})
+        fd_temp=fd_temp.set_index('timestamp')
+        return_fd = pd.merge(fd_temp,return_fd,how='outer',left_index=True,right_index=True)
+    return return_fd
+
+
 
 
 if __name__ =="__main__":
@@ -12,6 +43,7 @@ if __name__ =="__main__":
     parser.add_argument('-f','--file',help='-f [SAVE_FILE_NAME]',required=True)
     #parser.add_argument('-d','--dir',help='-d [SAVE_FILES_DIRECTORY]',required=True)
     parser.add_argument('-n','--number',help='-n [SAVE_FILES_NUMBERS]',required=True)
+    parser.add_argument('-l','--log',help='-l [REFERENCE LOG FILE]',required=True)
     args = parser.parse_args()
 
     #merci1='collision'
@@ -31,7 +63,7 @@ if __name__ =="__main__":
         fd = fd.set_index('timestamp').sort_index(axis=1)
         fd['4']=fd['4'].subtract(fd['5']) #4 axis motor gets current including 5axis.
         #cutting
-        log = '../controller/logging/log.'+'col.'+str(i)
+        log = '../controller/logging/log.'+args.log+'.'+str(i)
         startT = exceptT = checkT = None
         with open(log) as lines:
             for line in lines:
@@ -48,6 +80,9 @@ if __name__ =="__main__":
             elif not checkT == None:
                 fd = fd.loc[:float('%.3f'%checkT)]
 
+        fd =pd.merge(filtering(fd),fd,left_index=True,right_index=True) #filtered
+        indexs = ['1f','2f','3f','4f','5f','6f','1','2','3','4','5','6','gx','gy','gz','ax','ay','az']
+        fd=fd.reindex(columns=indexs)
 
         #fd = pd.merge(fd4,fd3)
         
