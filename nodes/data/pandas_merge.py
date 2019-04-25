@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import argparse
 
-
 def filtering(fd):
     return_fd = pd.DataFrame()
     for j in range(1,7):
@@ -33,8 +32,27 @@ def filtering(fd):
         return_fd = pd.merge(fd_temp,return_fd,how='outer',left_index=True,right_index=True)
     return return_fd
 
-
-
+def differential(fd):
+    return_fd = pd.DataFrame()
+    for j in range(1,7):
+        #print("[INFO] : "+str(j)+"'s axis....")
+        List=[]
+        Values=[]
+        index_j = str(j)+'f'
+        sample = fd[index_j]
+        for k in range(0,len(sample.index)):
+            if k > len(sample.index)-2:
+                List.append(sample.index[k])
+                Values.append(0)
+            else:
+                value = abs(sample.iloc[k+1]
+                        - sample.iloc[k])
+                List.append(sample.index[k])
+                Values.append(value)
+        fd_temp = pd.DataFrame({'timestamp':List,str(j)+'d':Values})
+        fd_temp = fd_temp.set_index('timestamp')
+        return_fd = pd.merge(fd_temp,return_fd,how='outer',left_index=True,right_index=True)
+    return return_fd
 
 if __name__ =="__main__":
     
@@ -80,11 +98,14 @@ if __name__ =="__main__":
             elif not checkT == None:
                 fd = fd.loc[:float('%.3f'%checkT)]
 
-        fd =pd.merge(filtering(fd),fd,left_index=True,right_index=True) #filtered
-        indexs = ['1f','2f','3f','4f','5f','6f','1','2','3','4','5','6','gx','gy','gz','ax','ay','az']
-        fd=fd.reindex(columns=indexs)
+        print("[INFO] : "+str(i)+"'s file's filtering....")
+        fd = pd.merge(filtering(fd),fd,left_index=True,right_index=True) #filtered
+        print("[INFO] : "+str(i)+"'s file's differentialing....")
+        fd = pd.merge(differential(fd),fd,left_index=True,right_index=True) ##different value add
 
-        #fd = pd.merge(fd4,fd3)
+        indexs = ['1d','2d','3d','4d','5d','6d','1f','2f','3f','4f','5f','6f','1','2','3','4','5','6','gx','gy','gz','ax','ay','az']
+        #indexs = ['1f','2f','3f','4f','5f','6f','1','2','3','4','5','6','gx','gy','gz','ax','ay','az']
+        fd=fd.reindex(columns=indexs)
         
         if not fd.isnull().values.any() == False:
             print("[WARN] : "+merci+str(i)+"'s file has nan values!!")
