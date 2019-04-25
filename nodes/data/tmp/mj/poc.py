@@ -5,20 +5,19 @@ class collision():
     def __init__(self):
         pass
     def one(self): #mj
-        return ('1d',10)
+        return ('1D',85,1,0)
     def three(self): #3jd
-        return ('3d',15) #20
+        return ('3D',200,1,0) #20
     def five(self): #3jd
-        return ('5d',7)
+        return ('5D',20,5,3) #term, cnt
 
 if __name__=="__main__":
     Case = collision()
-    term = 6
     dire = 'mj'
-    (joint, thres) = Case.one()
+    (joint, thres, term, cnt) = Case.five()
     for i in range(1,101):
         print("[INFO] : "+str(i)+"'s checking..")
-        path = './data/'+dire+'.'+str(i)+'.csv'
+        path = './data_2/'+dire+'.'+str(i)+'.csv'
         fd = pd.read_csv(path)
         for j in range(10,len(fd)-term):
             merci = fd[joint] #5d thres 9
@@ -26,8 +25,8 @@ if __name__=="__main__":
             for k in range(term):
                 if merci.iloc[j+k] > thres:
                     count += 1
-            if count > 3:
-                print(str(i)+': C')
+            if count > cnt:
+                print(str(i)+': C'+str(j+k))
                 break
 
 

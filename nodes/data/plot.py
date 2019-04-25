@@ -25,11 +25,11 @@ if __name__ == "__main__":
 
         for j in range(1,7):
             k=j-1
-            lst[int(k/2)][k%2].plot(fd[str(j)],'k-')
+            lst[int(k/2)][k%2].plot(fd[str(j)+'D'],'k-')
             lst[int(k/2)][k%2].set_xlabel(str(j)+"'s axis")
 
         #plt.show()
-        plt.savefig('./tmp/'+merci+str(i)+'.raw.png')
+        plt.savefig('./tmp/'+merci+str(i)+'.diff2.png')
         plt.cla()
         plt.close('all')
         del fig
