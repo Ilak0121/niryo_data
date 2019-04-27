@@ -4,6 +4,7 @@ import json
 import sys
 import argparse
 import gevent
+from termcolor import colored 
 
 from gevent import monkey
 
@@ -16,7 +17,7 @@ def test(s):
         recv = s.recv(1024).decode()
         if(recv[0:7] == "[ERROR]"):
             s.close()
-            print(recv)
+            print(colored(recv[:7],'red',attrs=['bold','reverse'])+recv[8:])
             break
         if(recv == "[STATUS] : Sensing finished..."):
             s.close()
