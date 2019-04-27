@@ -1,4 +1,4 @@
-exp="23jd"
+exp="35jd"
 read -p "num : " num
 
 #for num in {51..100}
