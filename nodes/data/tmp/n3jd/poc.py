@@ -16,18 +16,21 @@ class collision():
 
 def test(args,dire):
     (joint, thres, term, cnt) = args
-    if dire == '23jd' and joint == '3D' :
-        thres = 78
     check = 0
     number = 101
 
-    if dire == '35jd':
+    #if dire == '23jd' and joint == '3D' :
+    #    thres = 78
+
+    if dire == '35jd': # test case number
         number = 11
     elif dire == 'n3jd':
         number = 52
 
+    cases = set()
     for i in range(1,number):
         #print("[INFO] : "+str(i)+"'s checking..")
+        cases.add(i)
         path = './data_2/'+dire+'.'+str(i)+'.csv'
         fd = pd.read_csv(path)
         for j in range(10,len(fd)-term):
@@ -38,9 +41,13 @@ def test(args,dire):
                     count += 1
             if count > cnt:
                 check += 1
+                cases.remove(i)
                 #print(str(i)+': C'+str(j+k))
                 break
     print("# of collision of "+str(joint)+" : "+str(check))
+    if joint == '3D':
+        for kk in cases:
+            print("\t>>"+str(kk))
 
 def test2(args,dire):
     (joint, thres, term, cnt) = args

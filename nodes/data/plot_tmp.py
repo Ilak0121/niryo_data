@@ -25,6 +25,8 @@ if __name__ == "__main__":
 
         for j in range(1,7):
             k=j-1
+            #if k == 0:
+            #    lst[int(k/2)][k%2].set_ylim(185,535)
             lst[int(k/2)][k%2].plot(fd[str(j)],'k-')
             lst[int(k/2)][k%2].set_xlabel(str(j)+"'s axis")
 

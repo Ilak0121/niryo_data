@@ -1,3 +1,4 @@
+
 import pandas as pd
 import numpy as np
 import argparse
@@ -14,47 +15,12 @@ class collision():
     def five(self): #3jd
         return ('5',20,5,0) #term, cnt
 
-def test(args,dire):
-    (joint, thres, term, cnt) = args
-    check = 0
-    number = 101
-
-    #if dire == '23jd' and joint == '3D' :
-    #    thres = 78
-
-    if dire == '35jd': # test case number
-        number = 11
-    elif dire == 'n3jd':
-        number = 52
-
-    cases = set()
-    for i in range(1,number):
-        #print("[INFO] : "+str(i)+"'s checking..")
-        cases.add(i)
-        path = './data_2/'+dire+'.'+str(i)+'.csv'
-        fd = pd.read_csv(path)
-        for j in range(10,len(fd)-term):
-            merci = fd[joint] #5d thres 9
-            count = 0
-            for k in range(term):
-                if merci.iloc[j+k] > thres:
-                    count += 1
-            if count > cnt:
-                check += 1
-                cases.remove(i)
-                #print(str(i)+': C'+str(j+k))
-                break
-    print("# of collision of "+str(joint)+" : "+str(check))
-    if joint == '3D':
-        for kk in cases:
-            print("\t>>"+str(kk))
-
 def test2(args,dire):
     (joint, thres, term, cnt) = args
     check = 0
     number = 101
     if dire == '35jd':
-        number = 11
+        number = 2
     elif dire == 'n3jd':
         number = 52
 
@@ -69,7 +35,8 @@ def test2(args,dire):
             for k in range(term):
                 rms += merci.iloc[j+k] ** 2
             rms /= term
-            #print(str(j)+' : '+str(rms))
+            print(str(fd['timestamp'].iloc[j+k])+' : '+str(rms))
+            '''
             if rms > 14000:
                 count += 1
                 #print(str(i)+' : ')
@@ -77,6 +44,7 @@ def test2(args,dire):
                 check += 1
                 #print(str(i)+': C'+str(j+k))
                 break
+            '''
     print("# of collision of "+str(joint)+" : "+str(check))
 
 if __name__=="__main__":
@@ -87,9 +55,6 @@ if __name__=="__main__":
 
     Case = collision()
 
-    test(Case.one(),args.file)
-    test(Case.two(),args.file)
-    test(Case.three(),args.file)
     test2(Case.five(),args.file)
 
 
