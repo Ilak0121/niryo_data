@@ -85,9 +85,6 @@ def run(experiment_type,duration,file_name):
             s3.close()
         s4.close()                                          ##socket close
 
-
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Controller for experiment')
 

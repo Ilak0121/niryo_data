@@ -1,5 +1,0 @@
-1. ROS
-ROS is a flexible framework for writing robot software.
-It is a collection of tools, libraries, and conventions that aim to simplify the task of creating complex and robus robot behavior across a wide variety of robotic platforms.
-
-why? -> creating truly robust, general-purpose robot s/w is hard.

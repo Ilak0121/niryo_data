@@ -1,3 +1,5 @@
+#this module is for making Exception
+
 class SensingFinished(Exception):
     def __init__(self):
         pass
