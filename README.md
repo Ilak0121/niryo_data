@@ -1,6 +1,7 @@
-# Reachering repository
+# Niryo_one data collecter
+> The repository for collecting data from niryo_one toy robot.
 
-## nodes
+## information of nodes
 1. niryo1 - current sensors of axis(4,5,6)
 ```
 6 : 0x40
